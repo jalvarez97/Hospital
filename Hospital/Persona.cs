@@ -8,7 +8,8 @@ namespace Hospital
 {
     public class Persona
     {
-        public Persona(string nombre, int edad, string sexo, string docIdentidad, string email, int numTelefono)
+        public Persona() { }    
+        public Persona(string nombre, int edad, string sexo, string docIdentidad, string email, int numTelefono, bool esMedico)
         {
             Nombre = nombre;
             Edad = edad;
@@ -16,6 +17,7 @@ namespace Hospital
             DocIdentidad = docIdentidad;
             Email = email;
             NumTelefono = numTelefono;
+            EsMedico = esMedico;
         }
 
         public  string Nombre { get; set; }
@@ -24,5 +26,12 @@ namespace Hospital
         public string DocIdentidad { get; set; }
         public string Email { get; set; }
         public int NumTelefono { get; set; }
+
+        public bool EsMedico { get; set; }
+
+        public override string ToString()
+        {
+            return "Nombre: " + Nombre + " | Edad: " + Edad + " | Sexo: " + Sexo + " | DNI: " + DocIdentidad + " | Email: " + Email + " | Teléfono: " + NumTelefono;
+        }
     }
 }
