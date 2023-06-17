@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading;
+﻿using System.Collections.Generic;
 
 namespace Hospital
 {
@@ -17,11 +12,13 @@ namespace Hospital
             Especialidad = especialidad;
         }
 
+        //Propiedades
         public int NumColegiado { get; set; }      
         public string Especialidad { get; set; }
 
         public List<Paciente> Pacientes = new List<Paciente>();        
 
+        //Métodos
         public override string ToString()
         {
             return base.ToString() + " | NumColegiado: " + NumColegiado + " | Especialidad: " + Especialidad;

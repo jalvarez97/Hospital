@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Hospital
 {
@@ -19,7 +10,10 @@ namespace Hospital
 
             bool bUsando = true;
 
-            Hospital oHospital = new Hospital();          
+            Hospital oHospital = new Hospital();
+            Automatizacion oAutomatiza = new Automatizacion();
+
+            oHospital.Personas = oAutomatiza.GenerarMedicosConPacientesRandom(3);
 
             while (bUsando) 
             {

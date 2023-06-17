@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace Hospital
 {
-    internal class CodigoNoUtilizado
+    internal class Automatizacion
     {
+        //Datos para generar médicos sin rellenar personas automaticamente
+        //e ingresar y asignar pacientes por cada médico de forma aleatoria
+
         private List<string> lstNombresMedicosHombre = new List<string>() { "Pascal","Jhonny", "Samu", "Javi"
                                                                        , "Alex", "Saul", "Wintop", "Manu"
                                                                        , "Oscar", "Joel", "Alejandro", "Alvaro"
@@ -25,9 +28,10 @@ namespace Hospital
 
         private Random rnd = new Random();
 
-        public void GenerarMedicosConPacientesRandom(int generar, List<Medico> medicos)
+        public List<Persona> GenerarMedicosConPacientesRandom(int generar)
         {
-            Medico oMedico = new Medico();
+           List<Persona> oPersonas = new List<Persona>();
+           Medico oMedico = new Medico();
 
             for (int i = 0; i < generar; i++)
             {
@@ -41,8 +45,8 @@ namespace Hospital
                                         , rnd.Next(1000, 2500), lstEspecialidades[rnd.Next(0, 3)]);
 
                     //Para cada medico generamos los mismos pacientes que medicos haya:                   
-                    oMedico.Pacientes = GenerarPacientesRandom(generar);
-                }
+                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas);
+                                    }
                 else
                 {
                     oMedico = new Medico(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M", rnd.Next(23401238, 777777777) + "W"
@@ -51,15 +55,16 @@ namespace Hospital
 
 
                     //Para cada medico generamos los mismos pacientes que medicos haya:                    
-                    oMedico.Pacientes = GenerarPacientesRandom(generar);
+                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas);
 
                 }
 
-                medicos.Add(oMedico);
+                oPersonas.Add(oMedico);
             }
+            return oPersonas;
         }
 
-        public List<Paciente> GenerarPacientesRandom(int generar)
+        public List<Paciente> GenerarPacientesRandom(int generar, List<Persona> oPersonasPaciente)
         {
             List<Paciente> lstPacientes = new List<Paciente>();
             Paciente oPaciente = new Paciente();
@@ -82,6 +87,7 @@ namespace Hospital
                                         , lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
                 }
                 lstPacientes.Add(oPaciente);
+                oPersonasPaciente.Add(oPaciente);
             }
             return lstPacientes;
         }

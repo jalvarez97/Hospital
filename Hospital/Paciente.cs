@@ -1,5 +1,4 @@
-﻿
-namespace Hospital
+﻿namespace Hospital
 {
     public class Paciente : Persona
     {
@@ -12,10 +11,11 @@ namespace Hospital
             Tratamiento = tratamiento;
         }
 
+        //propiedades
         public string Enfermedad { get; set; }        
         public string Tratamiento { get; set; }
         
-
+        //métodos
         public override string ToString()
         {
             return base.ToString() + " | Enfermedad: " + Enfermedad + " | Tratamiento: " + Tratamiento;

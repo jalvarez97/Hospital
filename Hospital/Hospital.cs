@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Hospital
 {
@@ -72,11 +70,10 @@ namespace Hospital
             Personas.Add(oMedico);
 
             Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
-
         }     
 
-        public void IngresarPaciente() {
-
+        public void IngresarPaciente() 
+        {
             Console.Clear();
             Console.WriteLine("Hospital APP");
             Console.WriteLine(" 2 - Dar de alta un paciente:");
@@ -121,6 +118,7 @@ namespace Hospital
                 if (nTelefono == 0 || nTelefono < 600000000)
                     Console.WriteLine("Número no válido");
             }
+
             Console.WriteLine("");
             Console.WriteLine("Introduzca la enfermedad: ");
 
@@ -221,6 +219,7 @@ namespace Hospital
                 }
             }
 
+            Console.WriteLine(" Paciente dado de alta correctamente.");
             Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
         }
 
@@ -252,9 +251,10 @@ namespace Hospital
 
         public void MostrarMedicos(bool vieneMenu)
         {
+            int nContador = 0;
             //Si viene de la opcion del menu se muestra diferente
             if (vieneMenu)
-            {
+            {                
                 Console.Clear();
                 Console.WriteLine("Hospital APP");
                 Console.WriteLine(" 3 - Ver médicos:");
@@ -264,13 +264,15 @@ namespace Hospital
                     if (Personas[i].EsMedico)
                     {
                         Thread.Sleep(125);
-                        Console.WriteLine("  " + (i + 1) + ". " + Personas[i]);
+                        Console.WriteLine("  " + (nContador + 1) + ". " + Personas[i]);
                         Thread.Sleep(125);
+                        nContador++;
                     }
                 }
                 Console.WriteLine(" ");
                 Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
             }
+            //Viene del menu AsignarPaciente a Médico
             else
             {
                 for (int i = 0; i < Personas.Count; i++)
@@ -278,12 +280,12 @@ namespace Hospital
                     if (Personas[i].EsMedico)
                     {
                         Thread.Sleep(125);
-                        Console.WriteLine("         " + (i + 1) + ". " + Personas[i]);
+                        Console.WriteLine("         " + (nContador + 1) + ". " + Personas[i]);
                         Thread.Sleep(125);
+                        nContador++;
                     }
                 }
-            }
-            
+            }            
         }
 
         public void MostrarPaciente()
@@ -291,6 +293,7 @@ namespace Hospital
             Console.Clear();
             Console.WriteLine("Hospital APP");
             Console.WriteLine(" 4 - Ver todos los pacientes");
+
             //Si viene de la opcion del menu se muestra diferente
             List<Medico> lstMedicos = ObtenerMedicos();
             string sMedicoAsignado = "";
@@ -312,11 +315,16 @@ namespace Hospital
                     }
 
                     Thread.Sleep(125);
-                    Console.WriteLine("  " + (nContador + 1) + ". " + Personas[oNumPersona] + " | Médico Asignado: " + sMedicoAsignado);
+                    Console.Write("  " + (nContador + 1) + ". " + Personas[oNumPersona] + " | ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Médico Asignado: " + sMedicoAsignado);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("");
                     Thread.Sleep(125);
                     nContador++;
                 }
             }
+
             Console.WriteLine(" ");
             Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
         }
@@ -328,16 +336,32 @@ namespace Hospital
             Console.WriteLine("Hospital APP");
             Console.WriteLine(" 6 - Ver todas las personas del hospital.");
 
+            int nContador = 1;  
+
             foreach (Persona oPersona in Personas)
             {
+                string sTipoPersona = "";
+
+                if (oPersona.EsMedico)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    sTipoPersona = "   " + nContador + ". " + "Médico | ";
+                }     
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    sTipoPersona = "   " + nContador + ". " + "Paciente | ";
+                }
+                
                 Thread.Sleep(125);
-                Console.WriteLine("   "+ oPersona);
+                Console.WriteLine(sTipoPersona + oPersona);
                 Thread.Sleep(125);
+                nContador++;
             }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("");
             Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
         }
-
-      
+              
     }
 }
