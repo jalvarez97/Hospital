@@ -41,21 +41,19 @@ namespace Hospital
                 if (nDecididor % 2 == 0)
                 {
                     oMedico = new Medico(lstNombresMedicosHombre[nNombreMedico], rnd.Next(18, 45), "H", rnd.Next(23401238, 777777777) + "M"
-                                        , lstNombresMedicosHombre[nNombreMedico] + "@gmail.com", rnd.Next(638723799, 722999999)
-                                        , rnd.Next(1000, 2500), lstEspecialidades[rnd.Next(0, 3)]);
+                                       , rnd.Next(638723799, 722999999), rnd.Next(1000, 2500), lstEspecialidades[rnd.Next(0, 3)]);
 
                     //Para cada medico generamos los mismos pacientes que medicos haya:                   
-                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas);
+                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas,oMedico);
                                     }
                 else
                 {
                     oMedico = new Medico(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M", rnd.Next(23401238, 777777777) + "W"
-                                        , lstNombresMedicosMujer[nNombreMedico] + "@gmail.com", rnd.Next(638723799, 722999999)
-                                        , rnd.Next(2500, 4000), lstEspecialidades[rnd.Next(0, 3)]);
+                                        , rnd.Next(638723799, 722999999), rnd.Next(2500, 4000), lstEspecialidades[rnd.Next(0, 3)]);
 
 
                     //Para cada medico generamos los mismos pacientes que medicos haya:                    
-                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas);
+                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas, oMedico);
 
                 }
 
@@ -64,7 +62,7 @@ namespace Hospital
             return oPersonas;
         }
 
-        public List<Paciente> GenerarPacientesRandom(int generar, List<Persona> oPersonasPaciente)
+        public List<Paciente> GenerarPacientesRandom(int generar, List<Persona> oPersonasPaciente, Medico oMedico)
         {
             List<Paciente> lstPacientes = new List<Paciente>();
             Paciente oPaciente = new Paciente();
@@ -77,15 +75,14 @@ namespace Hospital
                 if (nDecididor % 2 == 0)
                 {
                     oPaciente = new Paciente(lstNombresMedicosHombre[nNombreMedico], rnd.Next(18, 45), "H", rnd.Next(23401238, 777777777) + "M"
-                                        , lstNombresMedicosHombre[nNombreMedico] + "@gmail.com", rnd.Next(638723799, 722999999)
-                                        , lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
+                                        , rnd.Next(638723799, 722999999), lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
                 }
                 else
                 {
                     oPaciente = new Paciente(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M", rnd.Next(23401238, 777777777) + "W"
-                                        , lstNombresMedicosMujer[nNombreMedico] + "@gmail.com", rnd.Next(638723799, 722999999)
-                                        , lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
+                                       , rnd.Next(638723799, 722999999), lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
                 }
+                oPaciente.MedicoAsignado = oMedico;
                 lstPacientes.Add(oPaciente);
                 oPersonasPaciente.Add(oPaciente);
             }

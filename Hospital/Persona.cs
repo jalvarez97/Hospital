@@ -3,13 +3,13 @@
     public class Persona
     {
         public Persona() { }    
-        public Persona(string nombre, int edad, string sexo, string docIdentidad, string email, int numTelefono, bool esMedico)
+        public Persona(string nombre, int edad, string sexo, string docIdentidad, int numTelefono, bool esMedico)
         {
             Nombre = nombre;
             Edad = edad;
             Sexo = sexo;
             DocIdentidad = docIdentidad;
-            Email = email;
+            Email = nombre + "@gmail.com";
             NumTelefono = numTelefono;
             EsMedico = esMedico;
         }

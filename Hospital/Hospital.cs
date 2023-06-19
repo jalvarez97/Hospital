@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Hospital
@@ -8,220 +9,116 @@ namespace Hospital
     public class Hospital
     {
         public List<Persona> Personas = new List<Persona>();
-        private Random rnd = new Random();
-        private bool bUsando = true;
 
-        public Hospital() 
-        {
-            while (bUsando)
-            {
-                bUsando = Ejecutar();
-            }
-        }
-    
-
-        public bool Ejecutar()
-        {
-            MostrarMenu();
-
-            int nOpcion = 0;
-            while (nOpcion <= 0 || nOpcion > 8)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nOpcion))
-                    Console.WriteLine("  Debes introducir un número.");
-
-                if (nOpcion <= 0 || nOpcion > 8)
-                    Console.WriteLine("  Opción inexistente.");
-            }
-
-            if (nOpcion == 8)
-                return false;
-            else
-                SeleccionaOpcion(nOpcion);
-            
-            return true;
-        }
-
-        public void MostrarMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" Menú: ");
-            Console.WriteLine("     1 - Ingresar un médico.");
-            Console.WriteLine("     2 - Ingresar un paciente, para un médico concreto.");
-            Console.WriteLine("     3 - Ver médicos.");
-            Console.WriteLine("     4 - Ver pacientes.");
-            Console.WriteLine("     5 - Dar de alta paciente.");
-            Console.WriteLine("     6 - Ver todas las personas del hospital.");
-            Console.WriteLine("     7 - Generar médicos y pacientes automáticamente.");
-            Console.WriteLine("     8 - Salir.");
-        }
+        public Hospital()
+        {}    
 
         public void SeleccionaOpcion(int nOpcion)
         {
+            Console.Clear();
+            Console.WriteLine("Hospital APP");
+
             switch (nOpcion)
             {
                 case 1:
-                    IngresarMedico();
+                    Console.WriteLine("1 - Ingresar un médico:\n");
+                    InsertMedico();
                     break;
                 case 2:
-                    IngresarPaciente();
+                    Console.WriteLine("2 - Ingresar un paciente:\n");
+                    InsertPaciente();
                     break;
                 case 3:
-                    MostrarMedicos(true);
-                    Console.ReadKey();
+                    Console.WriteLine("3 - Ver médicos:\n");
+                    MostrarMedicos("  ");                    
                     break;
                 case 4:
-                    MostrarPaciente();
-                    Console.ReadKey();
+                    Console.WriteLine("4 - Ver pacientes:\n");
+                    MostrarPacientes();
                     break;
                 case 5:
-                    DarAltaPaciente();
+                    Console.WriteLine("5 - Eliminar paciente:\n");
+                    DeletePaciente();
                     break;
                 case 6:
+                    Console.WriteLine("6 - Ver todas las personas del hospital:\n");
                     MostrarPersonas();
-                    Console.ReadKey();
                     break;
                 case 7:
+                    Console.WriteLine("7 - Generar médicos y pacientes automáticos:\n");
                     GenerarMedicosPacientes();
                     break;                
             }
+            Console.WriteLine("");
+            Console.WriteLine("Pulsa cualquier tecla para continuar. . .");
+            Console.ReadKey();
         }
 
-        public void IngresarMedico()
+        public Persona PedirCampos()
         {
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 1 - Ingresar un médico:");
-            
-            Console.WriteLine("");
-            Console.WriteLine("Introduzca un nombre: ");
+            Persona oPersona = new Persona();
 
-            string sNombre = Console.ReadLine();
+            Console.WriteLine("Introduzca un nombre: ");
+            oPersona.Nombre = Console.ReadLine();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca la edad: ");
-            
-            int nEdad = 0;
-            while (nEdad == 0 || nEdad < 20)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nEdad))
-                    Console.WriteLine("Debes introducir un número.");
-
-                if (nEdad == 0 || nEdad < 20)
-                    Console.WriteLine("Edad insuficiente, minimo 20 años");                
-            }
+            oPersona.Edad = InputValidarNumero(1, 120, "Edad inválida, valores esperados entre 1 y 120");
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca el género: ");
-
-            string sGenero = Console.ReadLine();
+            oPersona.Sexo = Console.ReadLine();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca el documento de identidad: ");
-
-            string sDocIdentidad = Console.ReadLine();
+            oPersona.DocIdentidad = Console.ReadLine();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca el teléfono: ");
+            oPersona.NumTelefono = InputValidarNumero(600000000, 999999999, "Número de teléfono inválido");
 
-            int nTelefono = 0;
-            while (nTelefono == 0 || nTelefono < 600000000)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nTelefono))
-                    Console.WriteLine("Debes introducir un número.");
+            return oPersona;
+        }
 
-                if (nTelefono == 0 || nTelefono < 600000000)
-                    Console.WriteLine("Número no válido");
-            }
+        public void InsertMedico()
+        {           
+            Persona oPersona = PedirCampos();
+
+            Console.WriteLine("");
+            Console.WriteLine("Introduzca el número de colegiado: ");
+            int nNumColegiado = InputValidarNumero(1000,9999,
+                                                   "Número de colegiado inválido, valores esperados entre 1000 o 9999");
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca la especialidad: ");
+            string sEspecialidad = Console.ReadLine();
 
-            string sEspecialidad = Console.ReadLine();            
+            Medico oMedico = new Medico(oPersona, nNumColegiado, sEspecialidad);
 
-            Medico oMedico = new Medico(sNombre, nEdad, sGenero, sDocIdentidad
-                                      , sNombre + "@gmail.com", nTelefono
-                                      , rnd.Next(1000, 2500), sEspecialidad);
             Personas.Add(oMedico);
-
-            Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
-        }     
-
-        public void IngresarPaciente() 
+        }        
+        
+        public void InsertPaciente() 
         {
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 2 - Dar de alta un paciente:");
-
-            Console.WriteLine("");
-            Console.WriteLine("Introduzca un nombre: ");
-
-            string sNombre = Console.ReadLine();
-
-            Console.WriteLine("");
-            Console.WriteLine("Introduzca la edad: ");
-
-            int nEdad = 0;
-            while (nEdad <= 0)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nEdad))
-                    Console.WriteLine("Debes introducir un número.");
-
-                if (nEdad <= 0 )
-                    Console.WriteLine("Edad Minima 1");
-            }
-
-            Console.WriteLine("");
-            Console.WriteLine("Introduzca el género: ");
-
-            string sGenero = Console.ReadLine();
-
-            Console.WriteLine("");
-            Console.WriteLine("Introduzca el documento de identidad: ");
-
-            string sDocIdentidad = Console.ReadLine();
-
-            Console.WriteLine("");
-            Console.WriteLine("Introduzca el teléfono: ");
-
-            int nTelefono = 0;
-            while (nTelefono == 0 || nTelefono < 600000000)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nTelefono))
-                    Console.WriteLine("Debes introducir un número.");
-
-                if (nTelefono == 0 || nTelefono < 600000000)
-                    Console.WriteLine("Número no válido");
-            }
+            Persona oPersona = PedirCampos();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca la enfermedad: ");
-
             string sEnfermedad = Console.ReadLine();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca el tratamiento: ");
-
             string sTratamiento = Console.ReadLine();
 
-            Paciente oPaciente = new Paciente(sNombre, nEdad, sGenero, sDocIdentidad
-                                      , sNombre + "@gmail.com", nTelefono
-                                      , sEnfermedad, sTratamiento);
+            Paciente oPaciente = new Paciente(oPersona, sEnfermedad, sTratamiento);
             
             Personas.Add(oPaciente);
 
-            AsignarPacienteMedico(oPaciente);           
-        }
+            AsignaPacienteMedico(oPaciente);           
+        }       
 
-        public void AsignarPacienteMedico(Paciente oPaciente)
-        {
-            List<Medico> lstMedicos = ObtenerMedicos();
-
-            //AsignamosPaciente
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 2 - Ingresar un paciente:");
+        public void AsignaPacienteMedico(Paciente oPaciente)
+        {          
             Console.WriteLine("     Paciente ingresado correctamente.");
             Console.WriteLine("");
             Console.WriteLine("         " + oPaciente);
@@ -229,225 +126,71 @@ namespace Hospital
             Console.WriteLine("     Mostrando médicos para asignar: ");
             Console.WriteLine("");
 
-            MostrarMedicos(false);
+            Medico oMedSelect = (Medico) SeleccionarPersona(true);
 
-            Console.WriteLine(" ");
-            Console.WriteLine(" Introduzca un número del 1 al " + lstMedicos.Count + " para asignar médico. . .");
-
-            int nMedicoSeleccionado = 0;
-            while (nMedicoSeleccionado == 0 || nMedicoSeleccionado > lstMedicos.Count())
-            {
-                while (!int.TryParse(Console.ReadLine(), out nMedicoSeleccionado))
-                    Console.WriteLine("  Debes introducir un número.");
-
-                if (nMedicoSeleccionado > lstMedicos.Count())
-                    Console.WriteLine("  Numero de médico inválido.");                
-            }
-
-            lstMedicos[nMedicoSeleccionado - 1].Pacientes.Add(oPaciente);
-
-            //Recorremos personas para reemplazar el medico, por el medico con el paciente ya asignado
-            for (int i = 0; i < Personas.Count; i++)
-            {
-                if (Personas[i] == lstMedicos[nMedicoSeleccionado - 1])
-                {
-                    Personas[i] = lstMedicos[nMedicoSeleccionado - 1];
-                }
-            }
-
-            Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
+            oPaciente.MedicoAsignado = oMedSelect;
+            oMedSelect.Pacientes.Add(oPaciente);            
         }      
 
-        public void DarAltaPaciente()
+        public void DeletePaciente()
         {
-            List <Paciente> lstPacientes = ObtenerPacientes();
-
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 5 - Dar Alta:");
-
-            for (int i = 0; i < lstPacientes.Count; i++)
-            {                
-                Thread.Sleep(125);
-                Console.WriteLine("  " + (i + 1) + ". " + lstPacientes[i]);
-                Thread.Sleep(125);                
-            }
-
-            Console.WriteLine(" ");
-            Console.WriteLine(" Introduzca un número del 1 al " + lstPacientes.Count + " para asignar médico. . .");
-
-            int nPacienteSeleccionado = 0;
-            while (nPacienteSeleccionado == 0 || nPacienteSeleccionado > lstPacientes.Count())
-            {
-                while (!int.TryParse(Console.ReadLine(), out nPacienteSeleccionado))
-                    Console.WriteLine("  Debes introducir un número.");
-
-                if (nPacienteSeleccionado > lstPacientes.Count())
-                    Console.WriteLine("  Numero de médico inválido.");               
-            }
-
-            for (int i = 0; i < Personas.Count; i++)
-            {
-                if (Personas[i].DocIdentidad == lstPacientes[nPacienteSeleccionado - 1].DocIdentidad
-                    && Personas[i].Nombre == lstPacientes[nPacienteSeleccionado - 1].Nombre)
-                {
-                    Personas.Remove(Personas[i]);
-                }
-            }
-
-            Console.WriteLine(" Paciente dado de alta correctamente.");
-            Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
+            Paciente oPaciente = (Paciente)SeleccionarPersona(false);                  
+            
+            Personas.Remove(oPaciente);
         }
-
-        private List<Medico> ObtenerMedicos()
+        
+        public void MostrarMedicos(string sMensaje)
         {
-            List<Medico> oMedicos = new List<Medico>();
+            int nContador = 1;
 
             foreach (Persona oPersona in Personas)
             {
-                if (oPersona.EsMedico)
-                    oMedicos.Add((Medico)oPersona);
-            }
-
-            return oMedicos;
-        }
-
-        private List<Paciente> ObtenerPacientes()
-        {
-            List<Paciente> oPacientes = new List<Paciente>();
-
-            foreach (Persona oPersona in Personas)
-            {
-                if (!oPersona.EsMedico)
-                    oPacientes.Add((Paciente)oPersona);
-            }
-
-            return oPacientes;
-        }
-
-        public void MostrarMedicos(bool vieneMenu)
-        {
-            int nContador = 0;
-            //Si viene de la opcion del menu se muestra diferente
-            if (vieneMenu)
-            {                
-                Console.Clear();
-                Console.WriteLine("Hospital APP");
-                Console.WriteLine(" 3 - Ver médicos:");
-
-                for (int i = 0; i < Personas.Count; i++)
+                if(oPersona is Medico)
                 {
-                    if (Personas[i].EsMedico)
-                    {
-                        Thread.Sleep(125);
-                        Console.WriteLine("  " + (nContador + 1) + ". " + Personas[i]);
-                        Thread.Sleep(125);
-                        nContador++;
-                    }
-                }
-                Console.WriteLine(" ");
-                Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
-            }
-            //Viene del menu AsignarPaciente a Médico
-            else
-            {
-                for (int i = 0; i < Personas.Count; i++)
-                {
-                    if (Personas[i].EsMedico)
-                    {
-                        Thread.Sleep(125);
-                        Console.WriteLine("         " + (nContador + 1) + ". " + Personas[i]);
-                        Thread.Sleep(125);
-                        nContador++;
-                    }
-                }
-            }            
-        }
-
-        public void MostrarPaciente()
-        {            
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 4 - Ver todos los pacientes");
-
-            //Si viene de la opcion del menu se muestra diferente
-            List<Medico> lstMedicos = ObtenerMedicos();
-            string sMedicoAsignado = "";
-            int nContador = 0;
-
-            for (int oNumPersona = 0; oNumPersona < Personas.Count; oNumPersona++)
-            {
-                if (!Personas[oNumPersona].EsMedico)
-                {
-                    for (int oNumMedico = 0; oNumMedico < lstMedicos.Count; oNumMedico++)
-                    {
-                        for (int oNumPaciente = 0; oNumPaciente < lstMedicos[oNumMedico].Pacientes.Count; oNumPaciente++)
-                        {
-                            if (lstMedicos[oNumMedico].Pacientes[oNumPaciente].Nombre == Personas[oNumPersona].Nombre)
-                            {
-                                sMedicoAsignado = lstMedicos[oNumMedico].Nombre;
-                            };
-                        }
-                    }
-
-                    Thread.Sleep(125);
-                    Console.Write("  " + (nContador + 1) + ". " + Personas[oNumPersona] + " | ");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Médico Asignado: " + sMedicoAsignado);
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("");
-                    Thread.Sleep(125);
+                    Console.WriteLine(sMensaje + nContador + ". " + oPersona);
                     nContador++;
                 }
             }
+        }                   
 
-            Console.WriteLine(" ");
-            Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
+        public void MostrarPacientes()
+        {            
+            int nContador = 1;
+
+            foreach (Persona oPersona in Personas)
+            {
+                if(oPersona is Paciente)
+                {
+                    Console.WriteLine("  " + nContador + ". " + oPersona);
+                    nContador++;
+                }
+            }  
         }
 
         public void MostrarPersonas()
-        {
-            Console.Clear();
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 6 - Ver todas las personas del hospital.");
-
+        {          
             int nContador = 1;  
 
             foreach (Persona oPersona in Personas)
             {
                 string sTipoPersona = "";
 
-                if (oPersona.EsMedico)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    sTipoPersona = "   " + nContador + ". " + "Médico | ";
-                }     
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    sTipoPersona = "   " + nContador + ". " + "Paciente | ";
-                }
+                if (oPersona is Medico)                
+                    Console.ForegroundColor = ConsoleColor.Green;                    
+                else                
+                    Console.ForegroundColor = ConsoleColor.White;               
                 
-                Thread.Sleep(125);
                 Console.WriteLine(sTipoPersona + oPersona);
-                Thread.Sleep(125);
                 nContador++;
             }
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("");
-            Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
+
+            Console.ForegroundColor = ConsoleColor.White;            
         }
 
         public void GenerarMedicosPacientes()
         {
             Automatizacion oAutomatiza = new Automatizacion();
 
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 7 - Generar médicos y pacientes automáticos: ");
-
-            Console.WriteLine("");
             Console.WriteLine("    Introduzca la el número de medicos a generar.");
             Console.WriteLine("    A cada médico se le asignaran tantos pacientes como médicos haya.");
 
@@ -464,5 +207,65 @@ namespace Hospital
             Personas = oAutomatiza.GenerarMedicosConPacientesRandom(nNum);
         }
 
+        public int InputValidarNumero(int nMin, int nMax, string sMensajeError)
+        {
+            int nNumValidar = 0;
+            while (nNumValidar <= nMin || nNumValidar > nMax)
+            {
+                while (!int.TryParse(Console.ReadLine(), out nNumValidar))
+                    Console.WriteLine("Debes introducir un número.");
+
+                if (nNumValidar <= nMin || nNumValidar > nMax)
+                    Console.WriteLine(sMensajeError);
+            }
+            return nNumValidar;
+        }       
+
+        private Persona SeleccionarPersona(bool bMedico)
+        {
+            List<Persona> lstPersonas = new List<Persona>();
+            Persona oPersona;
+
+            if (bMedico)
+            {
+                foreach (Persona p in Personas)
+                {
+                    if (p is Medico)
+                    {
+                        lstPersonas.Add(p);
+                    }
+                }
+
+                MostrarMedicos("         ");
+
+                Console.WriteLine(" ");
+                Console.WriteLine(" Introduzca un número del 1 al " + lstPersonas.Count + " para asignar médico. . .");
+
+                int nInputUser = InputValidarNumero(0, lstPersonas.Count, "Numero de médico inválido.");
+
+                oPersona = lstPersonas[nInputUser - 1];              
+            }
+            else
+            {
+                foreach (Persona p in Personas)
+                {
+                    if (p is Paciente)
+                    {
+                        lstPersonas.Add(p);
+                    }
+                }
+
+                MostrarPacientes();
+
+                Console.WriteLine(" ");
+                Console.WriteLine(" Introduzca un número del 1 al " + lstPersonas.Count + " para borrar paciente. . .");
+
+                int nInputUser = InputValidarNumero(0, lstPersonas.Count, "Numero de médico inválido.");
+
+                oPersona = lstPersonas[nInputUser - 1];
+            }
+            
+            return oPersona;
+        }
     }
 }

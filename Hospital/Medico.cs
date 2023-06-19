@@ -4,9 +4,17 @@ namespace Hospital
 {
     public class Medico : Persona
     {
-        public Medico() { }
+        public Medico() { }      
+
+        public Medico(Persona p, int numcColegiado, string especialidad) : base(p.Nombre, p.Edad, p.Sexo, p.DocIdentidad
+                                                                               ,p.NumTelefono,true)
+        {
+            NumColegiado = numcColegiado;
+            Especialidad = especialidad;
+        }
+        //Constructor para la automatizacion
         public Medico(string nombre, int edad, string sexo, string docIdentidad
-                     , string email, int numeroTelefono, int numcColegiado, string especialidad) : base(nombre, edad, sexo, docIdentidad, email, numeroTelefono,true)
+                     , int numeroTelefono, int numcColegiado, string especialidad) : base(nombre, edad, sexo, docIdentidad, numeroTelefono, true)
         {
             NumColegiado = numcColegiado;
             Especialidad = especialidad;
