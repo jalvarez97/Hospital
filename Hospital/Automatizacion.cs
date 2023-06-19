@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Hospital
 {
@@ -31,7 +27,8 @@ namespace Hospital
         public List<Persona> GenerarMedicosConPacientesRandom(int generar)
         {
             List<Persona> oPersonas = new List<Persona>();
-            Medico oMedico = new Medico();
+            Persona oPersona;
+            Medico oMedico;
 
             for (int i = 0; i < generar; i++)
             {
@@ -40,32 +37,35 @@ namespace Hospital
 
                 if (nDecididor % 2 == 0)
                 {
-                    oMedico = new Medico(lstNombresMedicosHombre[nNombreMedico], rnd.Next(18, 45), "H", rnd.Next(23401238, 777777777) + "M"
-                                       , rnd.Next(638723799, 722999999), rnd.Next(1000, 2500), lstEspecialidades[rnd.Next(0, 3)]);
+                    oPersona = new Persona(lstNombresMedicosHombre[nNombreMedico], rnd.Next(18, 45), "H"
+                                          , rnd.Next(23401238, 777777777) + "M", rnd.Next(638723799, 722999999));
+
+                    oMedico = new Medico(oPersona, rnd.Next(1000, 2500), lstEspecialidades[rnd.Next(0, 3)]);
 
                     //Para cada medico generamos los mismos pacientes que medicos haya:                   
-                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas,oMedico);
-                                    }
+                    oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas, oMedico);
+                }
                 else
-                {
-                    oMedico = new Medico(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M", rnd.Next(23401238, 777777777) + "W"
-                                        , rnd.Next(638723799, 722999999), rnd.Next(2500, 4000), lstEspecialidades[rnd.Next(0, 3)]);
+                { 
+                    oPersona = new Persona(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M"
+                                          , rnd.Next(23401238, 777777777) + "W", rnd.Next(638723799, 722999999));
 
+                    oMedico = new Medico(oPersona, rnd.Next(2500, 4000), lstEspecialidades[rnd.Next(0, 3)]);
 
                     //Para cada medico generamos los mismos pacientes que medicos haya:                    
                     oMedico.Pacientes = GenerarPacientesRandom(generar, oPersonas, oMedico);
-
                 }
-
                 oPersonas.Add(oMedico);
             }
+            
             return oPersonas;
-        }
-
+        }          
+        
         public List<Paciente> GenerarPacientesRandom(int generar, List<Persona> oPersonasPaciente, Medico oMedico)
         {
             List<Paciente> lstPacientes = new List<Paciente>();
-            Paciente oPaciente = new Paciente();
+            Persona oPersona;
+            Paciente oPaciente;
 
             for (int x = 0; x < generar; x++)
             {
@@ -74,18 +74,23 @@ namespace Hospital
 
                 if (nDecididor % 2 == 0)
                 {
-                    oPaciente = new Paciente(lstNombresMedicosHombre[nNombreMedico], rnd.Next(18, 45), "H", rnd.Next(23401238, 777777777) + "M"
-                                        , rnd.Next(638723799, 722999999), lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
+                    oPersona = new Persona(lstNombresMedicosHombre[nNombreMedico], rnd.Next(18, 45), "H"
+                                          , rnd.Next(23401238, 777777777) + "M", rnd.Next(638723799, 722999999));
+
+                    oPaciente = new Paciente(oPersona, lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
                 }
                 else
                 {
-                    oPaciente = new Paciente(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M", rnd.Next(23401238, 777777777) + "W"
-                                       , rnd.Next(638723799, 722999999), lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
+                    oPersona = new Persona(lstNombresMedicosMujer[nNombreMedico], rnd.Next(18, 45), "M"
+                                          , rnd.Next(23401238, 777777777) + "W", rnd.Next(638723799, 722999999));
+
+                    oPaciente = new Paciente(oPersona, lstEnfermedades[rnd.Next(0, 4)], "Ibuprofeno");
                 }
                 oPaciente.MedicoAsignado = oMedico;
                 lstPacientes.Add(oPaciente);
                 oPersonasPaciente.Add(oPaciente);
             }
+
             return lstPacientes;
         }
         

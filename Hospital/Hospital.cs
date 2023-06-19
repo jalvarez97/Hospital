@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace Hospital
 {
@@ -11,50 +8,9 @@ namespace Hospital
         public List<Persona> Personas = new List<Persona>();
 
         public Hospital()
-        {}    
+        {}         
 
-        public void SeleccionaOpcion(int nOpcion)
-        {
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-
-            switch (nOpcion)
-            {
-                case 1:
-                    Console.WriteLine("1 - Ingresar un médico:\n");
-                    InsertMedico();
-                    break;
-                case 2:
-                    Console.WriteLine("2 - Ingresar un paciente:\n");
-                    InsertPaciente();
-                    break;
-                case 3:
-                    Console.WriteLine("3 - Ver médicos:\n");
-                    MostrarMedicos("  ");                    
-                    break;
-                case 4:
-                    Console.WriteLine("4 - Ver pacientes:\n");
-                    MostrarPacientes();
-                    break;
-                case 5:
-                    Console.WriteLine("5 - Eliminar paciente:\n");
-                    DeletePaciente();
-                    break;
-                case 6:
-                    Console.WriteLine("6 - Ver todas las personas del hospital:\n");
-                    MostrarPersonas();
-                    break;
-                case 7:
-                    Console.WriteLine("7 - Generar médicos y pacientes automáticos:\n");
-                    GenerarMedicosPacientes();
-                    break;                
-            }
-            Console.WriteLine("");
-            Console.WriteLine("Pulsa cualquier tecla para continuar. . .");
-            Console.ReadKey();
-        }
-
-        public Persona PedirCampos()
+        public Persona PedirCamposPersona()
         {
             Persona oPersona = new Persona();
 
@@ -82,7 +38,7 @@ namespace Hospital
 
         public void InsertMedico()
         {           
-            Persona oPersona = PedirCampos();
+            Persona oPersona = PedirCamposPersona();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca el número de colegiado: ");
@@ -100,7 +56,7 @@ namespace Hospital
         
         public void InsertPaciente() 
         {
-            Persona oPersona = PedirCampos();
+            Persona oPersona = PedirCamposPersona();
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca la enfermedad: ");
@@ -134,7 +90,7 @@ namespace Hospital
 
         public void DeletePaciente()
         {
-            Paciente oPaciente = (Paciente)SeleccionarPersona(false);                  
+            Paciente oPaciente = (Paciente) SeleccionarPersona(false);                  
             
             Personas.Remove(oPaciente);
         }
@@ -180,7 +136,7 @@ namespace Hospital
                 else                
                     Console.ForegroundColor = ConsoleColor.White;               
                 
-                Console.WriteLine(sTipoPersona + oPersona);
+                Console.WriteLine(nContador + ". " + sTipoPersona + oPersona);
                 nContador++;
             }
 
@@ -191,7 +147,7 @@ namespace Hospital
         {
             Automatizacion oAutomatiza = new Automatizacion();
 
-            Console.WriteLine("    Introduzca la el número de medicos a generar.");
+            Console.WriteLine("    Introduzca el número de medicos a generar.");
             Console.WriteLine("    A cada médico se le asignaran tantos pacientes como médicos haya.");
 
             int nNum = 0;
@@ -219,51 +175,42 @@ namespace Hospital
                     Console.WriteLine(sMensajeError);
             }
             return nNumValidar;
-        }       
+        }
 
         private Persona SeleccionarPersona(bool bMedico)
         {
-            List<Persona> lstPersonas = new List<Persona>();
+            List<Persona> lstPersMedicos = new List<Persona>();
+            List<Persona> lstPersPaciente = new List<Persona>();
             Persona oPersona;
+            int nTotalPers;
+
+            foreach (Persona p in Personas)
+            {
+                if (p is Medico)
+                    lstPersMedicos.Add(p);
+                else
+                    lstPersPaciente.Add(p);
+            }
 
             if (bMedico)
             {
-                foreach (Persona p in Personas)
-                {
-                    if (p is Medico)
-                    {
-                        lstPersonas.Add(p);
-                    }
-                }
-
                 MostrarMedicos("         ");
-
-                Console.WriteLine(" ");
-                Console.WriteLine(" Introduzca un número del 1 al " + lstPersonas.Count + " para asignar médico. . .");
-
-                int nInputUser = InputValidarNumero(0, lstPersonas.Count, "Numero de médico inválido.");
-
-                oPersona = lstPersonas[nInputUser - 1];              
+                nTotalPers = lstPersMedicos.Count;
             }
             else
             {
-                foreach (Persona p in Personas)
-                {
-                    if (p is Paciente)
-                    {
-                        lstPersonas.Add(p);
-                    }
-                }
-
                 MostrarPacientes();
+                nTotalPers = lstPersPaciente.Count;
+            }                
 
-                Console.WriteLine(" ");
-                Console.WriteLine(" Introduzca un número del 1 al " + lstPersonas.Count + " para borrar paciente. . .");
+            Console.WriteLine(" ");
+            Console.WriteLine(" Introduzca un número del 1 al " + nTotalPers + " para asignar médico. . .");
+            int nInputUser = InputValidarNumero(0, nTotalPers, "Numero de médico inválido.");
 
-                int nInputUser = InputValidarNumero(0, lstPersonas.Count, "Numero de médico inválido.");
-
-                oPersona = lstPersonas[nInputUser - 1];
-            }
+            if(bMedico)
+                oPersona = lstPersMedicos[nInputUser - 1];
+            else
+                oPersona = lstPersPaciente[nInputUser - 1];            
             
             return oPersona;
         }

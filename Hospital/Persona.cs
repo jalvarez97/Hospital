@@ -3,7 +3,7 @@
     public class Persona
     {
         public Persona() { }    
-        public Persona(string nombre, int edad, string sexo, string docIdentidad, int numTelefono, bool esMedico)
+        public Persona(string nombre, int edad, string sexo, string docIdentidad, int numTelefono)
         {
             Nombre = nombre;
             Edad = edad;
@@ -11,7 +11,6 @@
             DocIdentidad = docIdentidad;
             Email = nombre + "@gmail.com";
             NumTelefono = numTelefono;
-            EsMedico = esMedico;
         }
 
         //propiedades
@@ -21,8 +20,6 @@
         public string DocIdentidad { get; set; }
         public string Email { get; set; }
         public int NumTelefono { get; set; }
-
-        public bool EsMedico { get; set; }
 
         //métodos
         public override string ToString()
