@@ -10,22 +10,19 @@ namespace Hospital
 
             bool bUsando = true;
 
-            Hospital oHospital = new Hospital();
-            Automatizacion oAutomatiza = new Automatizacion();
-
-            oHospital.Personas = oAutomatiza.GenerarMedicosConPacientesRandom(3);
+            Hospital oHospital = new Hospital();       
 
             while (bUsando) 
             {
                 MostrarMenu();
 
                 int nOpcion = 0;
-                while (nOpcion <= 0 || nOpcion > 7)
+                while (nOpcion <= 0 || nOpcion > 8)
                 {
                     while (!int.TryParse(Console.ReadLine(), out nOpcion))
                         Console.WriteLine("  Debes introducir un número.");
 
-                    if (nOpcion <= 0 || nOpcion > 7)
+                    if (nOpcion <= 0 || nOpcion > 8)
                         Console.WriteLine("  Opción inexistente.");                    
                 }
 
@@ -53,6 +50,9 @@ namespace Hospital
                         Console.ReadKey();
                         break;
                     case 7:
+                        oHospital.GenerarMedicosPacientes();
+                        break;
+                    case 8:
                         bUsando = false;
                         break;
                 }
@@ -65,13 +65,14 @@ namespace Hospital
             Console.Clear();
             Console.WriteLine("Hospital APP");
             Console.WriteLine(" Menú: ");
-            Console.WriteLine("     1 - Dar de alta un médico.");
+            Console.WriteLine("     1 - Ingresar un médico.");
             Console.WriteLine("     2 - Ingresar un paciente, para un médico concreto.");
             Console.WriteLine("     3 - Ver médicos.");
             Console.WriteLine("     4 - Ver pacientes.");
             Console.WriteLine("     5 - Dar de alta paciente.");
             Console.WriteLine("     6 - Ver todas las personas del hospital.");
-            Console.WriteLine("     7 - Salir.");
+            Console.WriteLine("     7 - Generar médicos y pacientes automáticamente.");
+            Console.WriteLine("     8 - Salir.");
         }
     }    
 

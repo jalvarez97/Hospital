@@ -12,11 +12,36 @@ namespace Hospital
 
         public Hospital() { }
 
+        public void GenerarMedicosPacientes()
+        {
+            Automatizacion oAutomatiza = new Automatizacion();
+
+            Console.Clear();
+            Console.WriteLine("Hospital APP");
+            Console.WriteLine(" 7 - Generar médicos y pacientes automáticos: ");
+
+            Console.WriteLine("");
+            Console.WriteLine("    Introduzca la el número de medicos a generar.");
+            Console.WriteLine("    A cada médico se le asignaran tantos pacientes como médicos haya.");
+
+            int nNum = 0;
+            while (nNum <= 0)
+            {
+                while (!int.TryParse(Console.ReadLine(), out nNum))
+                    Console.WriteLine("Debes introducir un número.");
+
+                if (nNum <= 0)
+                    Console.WriteLine("Número de médicos a generar insuficiente, mínimo 1 médico.");
+            }
+
+            Personas = oAutomatiza.GenerarMedicosConPacientesRandom(nNum);
+        }
+
         public void IngresarMedico()
         {
             Console.Clear();
             Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 1 - Dar de alta un médico:");
+            Console.WriteLine(" 1 - Ingresar un médico:");
             
             Console.WriteLine("");
             Console.WriteLine("Introduzca un nombre: ");
@@ -30,7 +55,7 @@ namespace Hospital
             while (nEdad == 0 || nEdad < 20)
             {
                 while (!int.TryParse(Console.ReadLine(), out nEdad))
-                    Console.WriteLine("  Debes introducir un número.");
+                    Console.WriteLine("Debes introducir un número.");
 
                 if (nEdad == 0 || nEdad < 20)
                     Console.WriteLine("Edad insuficiente, minimo 20 años");                
