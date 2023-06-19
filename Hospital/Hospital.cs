@@ -10,32 +10,7 @@ namespace Hospital
         public List<Persona> Personas = new List<Persona>();
         private Random rnd = new Random();
 
-        public Hospital() { }
-
-        public void GenerarMedicosPacientes()
-        {
-            Automatizacion oAutomatiza = new Automatizacion();
-
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" 7 - Generar médicos y pacientes automáticos: ");
-
-            Console.WriteLine("");
-            Console.WriteLine("    Introduzca la el número de medicos a generar.");
-            Console.WriteLine("    A cada médico se le asignaran tantos pacientes como médicos haya.");
-
-            int nNum = 0;
-            while (nNum <= 0)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nNum))
-                    Console.WriteLine("Debes introducir un número.");
-
-                if (nNum <= 0)
-                    Console.WriteLine("Número de médicos a generar insuficiente, mínimo 1 médico.");
-            }
-
-            Personas = oAutomatiza.GenerarMedicosConPacientesRandom(nNum);
-        }
+        public Hospital() { }        
 
         public void IngresarMedico()
         {
@@ -387,6 +362,31 @@ namespace Hospital
             Console.WriteLine("");
             Console.WriteLine(" Pulsa cualquier tecla para continuar. . .");
         }
-              
+
+        public void GenerarMedicosPacientes()
+        {
+            Automatizacion oAutomatiza = new Automatizacion();
+
+            Console.Clear();
+            Console.WriteLine("Hospital APP");
+            Console.WriteLine(" 7 - Generar médicos y pacientes automáticos: ");
+
+            Console.WriteLine("");
+            Console.WriteLine("    Introduzca la el número de medicos a generar.");
+            Console.WriteLine("    A cada médico se le asignaran tantos pacientes como médicos haya.");
+
+            int nNum = 0;
+            while (nNum <= 0)
+            {
+                while (!int.TryParse(Console.ReadLine(), out nNum))
+                    Console.WriteLine("Debes introducir un número.");
+
+                if (nNum <= 0)
+                    Console.WriteLine("Número de médicos a generar insuficiente, mínimo 1 médico.");
+            }
+
+            Personas = oAutomatiza.GenerarMedicosConPacientesRandom(nNum);
+        }
+
     }
 }
