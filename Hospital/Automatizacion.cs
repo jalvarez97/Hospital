@@ -91,24 +91,6 @@ namespace Hospital
             }
             return lstPacientes;
         }
-
-        public void MostrarPacientesMedico(List<Medico> lstMedicos, int nMedicoSeleccionado)
-        {
-            Console.Clear();
-            Console.WriteLine("Hospital APP");
-            Console.WriteLine(" Médico seleccionado: ");
-            Console.WriteLine("  " + nMedicoSeleccionado + ". " + lstMedicos[nMedicoSeleccionado - 1]);
-            Console.WriteLine("  " + "   Lista de pacientes: ");
-
-            int nContador = 1;
-            foreach (Paciente oPaciente in lstMedicos[nMedicoSeleccionado - 1].Pacientes)
-            {
-
-                Thread.Sleep(125);
-                Console.WriteLine("  " + "    " + (nContador) + ". " + oPaciente);
-                Thread.Sleep(125);
-                nContador++;
-            }
-        }
+        
     }
 }
