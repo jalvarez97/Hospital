@@ -19,7 +19,7 @@ namespace Hospital
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca la edad: ");
-            oPersona.Edad = InputValidarNumero(1, 120, "Edad inválida, valores esperados entre 1 y 120");
+            oPersona.Edad = InputValidarNumero(0, 120, "Edad inválida, valores esperados entre 1 y 120");
 
             Console.WriteLine("");
             Console.WriteLine("Introduzca el género: ");
@@ -159,8 +159,7 @@ namespace Hospital
                 if (nNum <= 0)
                     Console.WriteLine("Número de médicos a generar insuficiente, mínimo 1 médico.");
             }
-
-            Personas = oAutomatiza.GenerarMedicosConPacientesRandom(nNum);
+            Personas.AddRange(oAutomatiza.GenerarMedicosConPacientesRandom(nNum));            
         }
 
         public int InputValidarNumero(int nMin, int nMax, string sMensajeError)
