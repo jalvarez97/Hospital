@@ -9,8 +9,84 @@ namespace Hospital
     {
         public List<Persona> Personas = new List<Persona>();
         private Random rnd = new Random();
+        private bool bUsando = true;
 
-        public Hospital() { }        
+        public Hospital() 
+        {
+            while (bUsando)
+            {
+                bUsando = Ejecutar();
+            }
+        }
+    
+
+        public bool Ejecutar()
+        {
+            MostrarMenu();
+
+            int nOpcion = 0;
+            while (nOpcion <= 0 || nOpcion > 8)
+            {
+                while (!int.TryParse(Console.ReadLine(), out nOpcion))
+                    Console.WriteLine("  Debes introducir un número.");
+
+                if (nOpcion <= 0 || nOpcion > 8)
+                    Console.WriteLine("  Opción inexistente.");
+            }
+
+            if (nOpcion == 8)
+                return false;
+            else
+                SeleccionaOpcion(nOpcion);
+            
+            return true;
+        }
+
+        public void MostrarMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Hospital APP");
+            Console.WriteLine(" Menú: ");
+            Console.WriteLine("     1 - Ingresar un médico.");
+            Console.WriteLine("     2 - Ingresar un paciente, para un médico concreto.");
+            Console.WriteLine("     3 - Ver médicos.");
+            Console.WriteLine("     4 - Ver pacientes.");
+            Console.WriteLine("     5 - Dar de alta paciente.");
+            Console.WriteLine("     6 - Ver todas las personas del hospital.");
+            Console.WriteLine("     7 - Generar médicos y pacientes automáticamente.");
+            Console.WriteLine("     8 - Salir.");
+        }
+
+        public void SeleccionaOpcion(int nOpcion)
+        {
+            switch (nOpcion)
+            {
+                case 1:
+                    IngresarMedico();
+                    break;
+                case 2:
+                    IngresarPaciente();
+                    break;
+                case 3:
+                    MostrarMedicos(true);
+                    Console.ReadKey();
+                    break;
+                case 4:
+                    MostrarPaciente();
+                    Console.ReadKey();
+                    break;
+                case 5:
+                    DarAltaPaciente();
+                    break;
+                case 6:
+                    MostrarPersonas();
+                    Console.ReadKey();
+                    break;
+                case 7:
+                    GenerarMedicosPacientes();
+                    break;                
+            }
+        }
 
         public void IngresarMedico()
         {

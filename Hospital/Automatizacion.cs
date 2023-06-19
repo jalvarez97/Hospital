@@ -30,8 +30,8 @@ namespace Hospital
 
         public List<Persona> GenerarMedicosConPacientesRandom(int generar)
         {
-           List<Persona> oPersonas = new List<Persona>();
-           Medico oMedico = new Medico();
+            List<Persona> oPersonas = new List<Persona>();
+            Medico oMedico = new Medico();
 
             for (int i = 0; i < generar; i++)
             {
