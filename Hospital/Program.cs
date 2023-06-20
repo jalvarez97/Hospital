@@ -5,6 +5,7 @@ namespace Hospital
     internal class Program
     {
         static Hospital oHospital = new Hospital();
+
         static void Main(string[] args)
         {  
             while (Menu())
@@ -73,7 +74,7 @@ namespace Hospital
                     break;
                 case 7:
                     Console.WriteLine("7 - Generar médicos y pacientes automáticos:\n");
-                    oHospital.GenerarMedicosPacientes();
+                    oHospital.GenerarMedicosConPacientes();
                     break;
             }
 

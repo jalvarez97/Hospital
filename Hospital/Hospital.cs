@@ -8,7 +8,7 @@ namespace Hospital
         public List<Persona> Personas = new List<Persona>();
 
         public Hospital()
-        {}         
+        {}        
 
         public Persona PedirCamposPersona()
         {
@@ -143,22 +143,15 @@ namespace Hospital
             Console.ForegroundColor = ConsoleColor.White;            
         }
 
-        public void GenerarMedicosPacientes()
+        public void GenerarMedicosConPacientes()
         {
             Automatizacion oAutomatiza = new Automatizacion();
 
             Console.WriteLine("    Introduzca el número de medicos a generar.");
             Console.WriteLine("    A cada médico se le asignaran tantos pacientes como médicos haya.");
 
-            int nNum = 0;
-            while (nNum <= 0)
-            {
-                while (!int.TryParse(Console.ReadLine(), out nNum))
-                    Console.WriteLine("Debes introducir un número.");
-
-                if (nNum <= 0)
-                    Console.WriteLine("Número de médicos a generar insuficiente, mínimo 1 médico.");
-            }
+            int nNum = InputValidarNumero(0, 9999, "Número de médicos a generar insuficiente, mínimo 1 médico, máximo 9999.");
+          
             Personas.AddRange(oAutomatiza.GenerarMedicosConPacientesRandom(nNum));            
         }
 
