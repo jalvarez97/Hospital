@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Hospital
 {
@@ -43,6 +44,7 @@ namespace Hospital
 
         public static void SeleccionaOpcion(int nOpcion)
         {
+            List<Persona> lstPersonas = new List<Persona>();
             Console.Clear();
             Console.WriteLine("Hospital APP");
 
@@ -58,11 +60,13 @@ namespace Hospital
                     break;
                 case 3:
                     Console.WriteLine("3 - Ver médicos:\n");
-                    oHospital.MostrarMedicos("  ");
+                    lstPersonas = oHospital.ObtenerPersonas(true);
+                    oHospital.MostrarPersonas(lstPersonas, "  ");
                     break;
                 case 4:
                     Console.WriteLine("4 - Ver pacientes:\n");
-                    oHospital.MostrarPacientes();
+                    lstPersonas = oHospital.ObtenerPersonas(false);
+                    oHospital.MostrarPersonas(lstPersonas, "  ");
                     break;
                 case 5:
                     Console.WriteLine("5 - Eliminar paciente:\n");
@@ -70,7 +74,7 @@ namespace Hospital
                     break;
                 case 6:
                     Console.WriteLine("6 - Ver todas las personas del hospital:\n");
-                    oHospital.MostrarPersonas();
+                    oHospital.MostrarPersonas(oHospital.Personas, "");
                     break;
                 case 7:
                     Console.WriteLine("7 - Generar médicos y pacientes automáticos:\n");

@@ -93,56 +93,8 @@ namespace Hospital
             Paciente oPaciente = (Paciente) SeleccionarPersona(false);                  
             
             Personas.Remove(oPaciente);
-        }
-        
-        public void MostrarMedicos(string sMensaje)
-        {
-            int nContador = 1;
-
-            foreach (Persona oPersona in Personas)
-            {
-                if(oPersona is Medico)
-                {
-                    Console.WriteLine(sMensaje + nContador + ". " + oPersona);
-                    nContador++;
-                }
-            }
-        }                   
-
-        public void MostrarPacientes()
-        {            
-            int nContador = 1;
-
-            foreach (Persona oPersona in Personas)
-            {
-                if(oPersona is Paciente)
-                {
-                    Console.WriteLine("  " + nContador + ". " + oPersona);
-                    nContador++;
-                }
-            }  
-        }
-
-        public void MostrarPersonas()
-        {          
-            int nContador = 1;  
-
-            foreach (Persona oPersona in Personas)
-            {
-                string sTipoPersona = "";
-
-                if (oPersona is Medico)                
-                    Console.ForegroundColor = ConsoleColor.Green;                    
-                else                
-                    Console.ForegroundColor = ConsoleColor.White;               
-                
-                Console.WriteLine(nContador + ". " + sTipoPersona + oPersona);
-                nContador++;
-            }
-
-            Console.ForegroundColor = ConsoleColor.White;            
-        }
-
+        }  
+       
         public void GenerarMedicosConPacientes()
         {
             Automatizacion oAutomatiza = new Automatizacion();
@@ -169,42 +121,56 @@ namespace Hospital
             return nNumValidar;
         }
 
+        public void MostrarPersonas(List<Persona> lstPersonas, string sPosMenu)
+        {
+            int nContador = 1;
+
+            foreach (Persona oPersona in lstPersonas)
+            {
+                if (oPersona is Medico)
+                    Console.ForegroundColor = ConsoleColor.Green;
+                else
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                Console.WriteLine(sPosMenu + nContador + ". " + oPersona);
+                nContador++;
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         private Persona SeleccionarPersona(bool bMedico)
         {
-            List<Persona> lstPersMedicos = new List<Persona>();
-            List<Persona> lstPersPaciente = new List<Persona>();
-            Persona oPersona;
-            int nTotalPers;
-
-            foreach (Persona p in Personas)
-            {
-                if (p is Medico)
-                    lstPersMedicos.Add(p);
-                else
-                    lstPersPaciente.Add(p);
-            }
-
-            if (bMedico)
-            {
-                MostrarMedicos("         ");
-                nTotalPers = lstPersMedicos.Count;
-            }
-            else
-            {
-                MostrarPacientes();
-                nTotalPers = lstPersPaciente.Count;
-            }                
+            List<Persona> lstPers = ObtenerPersonas(bMedico);
+            Persona oPersona;           
+            
+            MostrarPersonas(lstPers, "  ");                           
 
             Console.WriteLine(" ");
-            Console.WriteLine(" Introduzca un número del 1 al " + nTotalPers + " para asignar médico. . .");
-            int nInputUser = InputValidarNumero(0, nTotalPers, "Numero de médico inválido.");
-
-            if(bMedico)
-                oPersona = lstPersMedicos[nInputUser - 1];
-            else
-                oPersona = lstPersPaciente[nInputUser - 1];            
+            Console.WriteLine(" Introduzca un número del 1 al " + lstPers.Count + " para asignar médico. . .");
+            int nInputUser = InputValidarNumero(0, lstPers.Count, "Numero de médico inválido.");
+                        
+            oPersona = lstPers[nInputUser - 1];                   
             
             return oPersona;
+        }
+
+        public List<Persona> ObtenerPersonas(bool bMedico)
+        {
+            List<Persona> lstPers = new List<Persona>();
+            
+            foreach (Persona p in Personas)
+            {
+                if (p is Medico && bMedico == true)
+                {
+                    lstPers.Add(p);
+                }                         
+                else if (p is Paciente && bMedico == false) 
+                { 
+                    lstPers.Add(p);
+                }                                             
+            }
+
+            return lstPers;
         }
     }
 }
