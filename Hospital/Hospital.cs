@@ -138,7 +138,7 @@ namespace Hospital
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        private Persona SeleccionarPersona(bool bMedico)
+        public Persona SeleccionarPersona(bool bMedico)
         {
             List<Persona> lstPers = ObtenerPersonas(bMedico);
             Persona oPersona;           
